@@ -60,6 +60,18 @@ Source: Perplexity research report pasted by Brian on 2026-11-23 (cutoff 2026-11
 - FiveThirtyEight (old, undated): KAYAK advice saved money on 5 of 15 routes.
 - Vendor ">90% accurate" claims: unverified. No independent proof of reliable buy-or-wait prediction found. Fixed caps plus percent-below-median are the safer core.
 
+## 7. Official-page checks (2026-11-23, by Claude)
+Confirmed from the page text. Each URL fetched once, no retries.
+- **ntfy FAQ** (https://docs.ntfy.sh/faq/): "In the default configuration, you'll be able to do 60 requests as a burst, and then 1 request per 10 seconds." This is the default config, so refill is 1 per 10s (publish page said 5s via summary only; not verbatim, so ignore). The 250 messages/day figure was only seen in a model summary of https://docs.ntfy.sh/publish/, not verbatim: still `[unverified]`.
+- **Supabase pausing** (https://supabase.com/docs/guides/deployment/going-into-prod): "We may pause applications on the Free Plan that exhibit low activity in a 7-day period." Pro guarantees no pausing. Page does not say whether cron or API traffic counts as activity: still `[unverified]`.
+- **Supabase Cron** (https://supabase.com/docs/guides/cron): uses the pg_cron extension; "can run anywhere from every second to once a year"; recommends no more than 8 concurrent jobs, each under 10 minutes; can make HTTP requests such as invoking an Edge Function.
+- **Duffel pricing** (https://duffel.com/pricing): plans are "Pay as you go" and "Enterprise". Fees: $0.005 per excess search, charged monthly if the search-to-book ratio exceeds 1500:1; $3.00 per order; $2.00 per paid ancillary; 2% FX. This replaces the earlier "extra searches beyond 10 requests/60s" wording. The 10 requests/60s limit is NOT confirmed (rate-limit page returned 404). Individual live access and monitoring rights: not stated on the page, still `[unverified]`.
+- **Fly4Free feed** (https://www.fly4free.com/feed/): HTTP 200, valid RSS 2.0, newest item pubDate Mon, 23 Nov 2026 21:00 +0000. Channel title is "Flight deals from Europe": it lists deals from European origins, so it may not carry SFO deals. Fields: title, link, dc:creator, pubDate, category, guid, description. No reuse or copyright line in the feed. Item count unclear (conflicting counts).
+- **The Flight Deal feed** (https://www.theflightdeal.com/feed/): HTTP 200, valid RSS 2.0, 16 items, newest pubDate Mon, 23 Nov 2026 19:33 +0000, and that item is a San Francisco deal. Fields: title, link, comments, dc:creator, pubDate, category, guid, description. No feed-wide license.
+- **Failed, still open:** travelpayouts.com/developers/api (404), duffel.com rate-limits page (404), developers.amadeus.com/self-service (empty body), transportation.gov refunds page (403), reddit.com/r/flightdeals/.rss (blocked by the fetch tool, says nothing about Reddit's status).
+- **Travelpayouts homepage** (https://www.travelpayouts.com/, 2026-11-23; tracking params dropped): it is an affiliate-network page. "Travelpayouts is 100% free — no sign-up fees and no ongoing costs." "Anyone with a public channel, such as a blog, website, or social media platform, can become an affiliate partner." No Data API, rate limits, or caching rules on this page (Terms of Service not read). So the Data API's existence, token eligibility for a project with no public channel, and storage terms are still `[unverified]`.
+- Lookup count: 15 fetches, over the 12 planned. Stopped.
+
 ## Could not verify (open)
 1. Exact Going "Asia $500 or less" source.
 2. Economy-only cheap/normal/expensive bands per season for all routes; SJC/OAK route benchmarks beyond Honolulu.

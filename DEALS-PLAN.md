@@ -1,6 +1,6 @@
 # DEALS-PLAN (Phase 1)
 
-Planning only. No app code exists. Every fact comes from `docs/RESEARCH.md` (a Perplexity report, 2026-11-23, not independently verified by Claude) or is marked `[unverified]`. No official-page lookups were done in this pass, so every item on the research "Could not verify" list is still open. Prices in `config/` are seed guesses.
+Planning only. No app code exists. Every fact comes from `docs/RESEARCH.md` (a Perplexity report, 2026-11-23, not independently verified by Claude) or is marked `[unverified]`. A follow-up pass on 2026-11-23 checked some items on official pages (RESEARCH s7); items marked `[unverified]` below are still open. Prices in `config/` are seed guesses.
 
 ## 1. Detection signals
 
@@ -14,7 +14,7 @@ Ranked by speed, then reliability. "Legal" means official API or public feed onl
 | 4 | Price-history anomalies | Depends on data age | Medium | Travelpayouts cached prices (about 2-7 days old) if accepted `[unverified]`. Cached data cannot catch a minutes-old error fare. |
 | 5 | Fare-class changes | Hours | Low | No public source found. `[unverified]`. Skip in Phase 2. |
 | 6 | New-route launches | Days | Medium (intro fares tend to be low `[unverified]`) | Airline press releases, manual. Low priority. |
-| 7 | Flexible-date sweeps | Per API call | Medium | Travelpayouts calendar and cheap methods (300/min per RESEARCH). Duffel is metered at $0.005 per extra search, so not free monitoring. |
+| 7 | Flexible-date sweeps | Per API call | Medium | Travelpayouts calendar and cheap methods (300/min per RESEARCH). Duffel charges $0.005 per search only above a 1500:1 search-to-book ratio (RESEARCH s7), so heavy sweeps with no orders could incur fees. |
 | 8 | Nearby-airport and positioning tricks | n/a | Medium | Locked airports: SFO, SJC, OAK only. Positioning from other airports is out of scope. |
 | 9 | Hidden-city / throwaway ticketing | n/a | **RISK, not a recommendation** | Often violates airline contracts of carriage `[unverified]`; can lead to cancelled return legs or loyalty penalties `[unverified]`. Never alert on these. |
 
@@ -45,19 +45,19 @@ All statuses are from RESEARCH s2-s3 as given.
 | Amadeus Self-Service | Fares | n/a | Reported shut down 2026-07-17 (phocuswire, 2026-02-09; first-party notice not retrieved) | n/a | **Unavailable** |
 | Skyscanner API | Prices | n/a | Commercial partners only (100k+ monthly users) | Live Pricing bans unattended requests | **Not usable** |
 | Kiwi Tequila | Search | n/a | Invitation-only | n/a | **Not usable** |
-| Duffel | Live offers | Extra searches $0.005 each | 10 requests/60s | Sandbox prices not real. Individual live access, retention, and unattended monitoring `[unverified]`. Calls must go via own backend | Weak. Metered, so not free monitoring. Upgrade candidate |
-| Travelpayouts / Aviasales Data API | Cached cheap prices and calendars | Free `[unverified]` | e.g. 300/min calendar and cheap, 60/min monthly | Token registration. Informational use. Docs suggest caching 24h. Current acceptance `[unverified]` | **Best primary candidate**, if accepted. Not real-time |
+| Duffel | Live offers | Pay as you go: $3.00/order, $0.005 per excess search (ratio over 1500:1), $2.00/paid ancillary, 2% FX (official pricing page, 2026-11-23) | 10 requests/60s `[unverified]` (rate-limit page 404) | Sandbox prices not real. Individual live access, retention, and unattended monitoring `[unverified]`. Calls must go via own backend | Weak for free monitoring. Upgrade candidate |
+| Travelpayouts / Aviasales Data API | Cached cheap prices and calendars | Free `[unverified]` | e.g. 300/min calendar and cheap, 60/min monthly | Token registration. Informational use. Docs suggest caching 24h. Official homepage (2026-11-23) shows an affiliate network, free to join for anyone with a public channel (blog, site, social); it does not mention a Data API. Whether a private project qualifies, and the API terms, `[unverified]` | **Best primary candidate**, if accepted. Not real-time |
 | Aviasales live Search API | Live search | n/a | 100 vs 200/hour (conflicting) | Automatic collection of booking links prohibited | **Not a fit** |
 | FlightAPI | Fares | Free trial only (20 calls vs 30 credits, conflicting) | Not recurring | Terms `[unverified]` | Not a fit for monitoring |
-| Fly4Free RSS (fly4free.com/feed/) | Deal posts, about 15/day | Free | Retrieval failed; operation `[unverified]` | Store title, price, link, timestamp only | Fallback candidate, verify first |
-| The Flight Deal RSS | Deal posts | Free | Endpoint `[unverified]` | Site says "All Rights Reserved" | Fallback candidate, verify first |
+| Fly4Free RSS (fly4free.com/feed/) | Deal posts | Free | Live on 2026-11-23 (valid RSS, fresh items). Channel is "Flight deals from Europe", so SFO deals are doubtful | No reuse line in feed; store title, price, link, timestamp only | Weak for SFO. Check for a US feed before relying on it |
+| The Flight Deal RSS (theflightdeal.com/feed/) | Deal posts, 16 items in feed | Free | Live on 2026-11-23, newest item same day, includes an SFO deal | Site says "All Rights Reserved"; no feed-wide license | **Best fallback.** Latency still `[unverified]` |
 | r/flightdeals | Deal posts | n/a | RSS reportedly shut 2026-11-13; new API applications stopped 2026-10-31 (Mashable, 2026-09-30) | n/a | Unreliable |
 | Secret Flying, Going | Deals | n/a | No verified public feed | Scraping would be needed, so **excluded** | Not usable |
 | KAYAK, Google Flights, airline sites | Prices | n/a | n/a | Scraping forbidden. Manual one-time reference only | **Excluded** as automated sources |
 
 **Recommended primary path:** Travelpayouts Data API for cached price history and calendar sweeps, plus public RSS deal feeds for fast signals. This needs Brian to create an account and token. I have not done that and will not without his go-ahead.
-**Fallback path:** RSS feeds only (Fly4Free, The Flight Deal, after checking they work), with manual entry of airline flash sales. Each deal is checked by hand via link-out. No fare API at all.
-**Upgrade path to paid API:** Duffel (documented $0.005 per extra search beyond the 10/60s limit). Confirm individual live access and monitoring rights first `[unverified]`. Budget is $0 until Brian approves otherwise.
+**Fallback path:** RSS feeds only (The Flight Deal first; Fly4Free is Europe-origin), with manual entry of airline flash sales. Each deal is checked by hand via link-out. No fare API at all.
+**Upgrade path to paid API:** Duffel (official pricing: $3.00/order, $0.005 per excess search above a 1500:1 ratio). Confirm individual live access and monitoring rights first `[unverified]`. Budget is $0 until Brian approves otherwise.
 
 **Gap:** with neither source confirmed, the 15-minute re-check of live deals (section 5) has no verified data source. Cached Travelpayouts data would be 2-7 days old, so "unbookable" and 15% rise checks would be unreliable. This is risk #1.
 
@@ -99,8 +99,8 @@ All statuses are from RESEARCH s2-s3 as given.
 
 | Service | Verified (from research) | Gaps `[unverified]` |
 |---|---|---|
-| ntfy.sh | 250 messages/day hosted. Burst 60 requests, then refill 1 per 5s (publish docs) vs 1 per 10s (FAQ). Self-hosting possible | Which refill interval is real |
-| Supabase Free | 500 MB database, 2 active projects, pause after 1 week of inactivity. `pg_cron` (+ `pg_net` to Edge Functions); sub-minute schedules documented | Whether cron activity prevents pausing. If not, a weekly manual visit or a keep-alive is needed |
+| ntfy.sh | Official FAQ: default burst 60 requests, then 1 per 10s. Self-hosting possible | 250 messages/day not seen verbatim on an official page `[unverified]` |
+| Supabase Free | Official: may pause Free projects with low activity in a 7-day period. Cron (pg_cron): every second to once a year, max 8 concurrent jobs, each under 10 min, can invoke Edge Functions. 500 MB / 2 projects from research only | Whether cron or API traffic counts as activity. If not, a weekly manual visit or keep-alive is needed |
 
 Email delivery service: not chosen `[unverified]`. Picking one may require an account or key, so ask first.
 
@@ -162,7 +162,7 @@ All fake data is labeled MOCK in code and UI.
 ## 10. Top 5 risks and open decisions (ranked)
 
 1. **No verified live data source.** Travelpayouts acceptance and its terms are unknown, and its data is days old. Decide: apply for a Travelpayouts token (needs an account), or accept feed-only detection. Without live data, the 15-minute re-check and "unbookable" test cannot work.
-2. **Deal feeds may be dead or slow.** Fly4Free and The Flight Deal endpoints are unverified; r/flightdeals is unreliable. Brian should confirm one working feed before Phase 2.
+2. **Deal feeds may be dead or slow.** The Flight Deal feed works and carries SFO deals (checked 2026-11-23). Fly4Free works but is Europe-origin. r/flightdeals is unreliable. Feed latency is still unknown, so measure it before Phase 2.
 3. **Free-tier fit.** Supabase may pause on inactivity, and 15-minute checks plus ntfy's 250/day cap need a rate budget. Decide: add a keep-alive, or accept pauses.
 4. **Starting caps are guesses.** `config/caps.json` has no verified basis. Several caps look below the KAYAK monthly medians in RESEARCH s1 (those are medians, not deal prices, but they flag that some caps may never fire). Decide: review the caps after about 4 weeks of real data.
 5. **Error fares may not be honored.** Alerts can cause real losses if Brian books extras early. Decide how loud the advisory badge and warning should be, and whether error-fare alerts should be limited to the highest-confidence cases only (as locked for quiet hours).
