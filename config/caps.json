@@ -1,0 +1,19 @@
+{
+  "disclaimer": "Seed guesses, not verified prices. Replace with measured medians.",
+  "caps": [
+    {"region": "NYC", "cap_usd": 280, "note": ""},
+    {"region": "US east of Rockies", "cap_usd": 250, "note": ""},
+    {"region": "Hawaii", "cap_usd": 320, "note": ""},
+    {"region": "Mexico", "cap_usd": 300, "note": ""},
+    {"region": "Caribbean", "cap_usd": 350, "note": ""},
+    {"region": "Western Europe", "cap_usd": 550, "note": ""},
+    {"region": "Japan", "cap_usd": 650, "note": "550 or under = exceptional"},
+    {"region": "Korea", "cap_usd": 650, "note": ""},
+    {"region": "Vietnam and SE Asia", "cap_usd": 750, "note": ""},
+    {"region": "South America north", "cap_usd": 450, "note": ""},
+    {"region": "South America south", "cap_usd": 600, "note": ""},
+    {"region": "Middle East and North Africa", "cap_usd": 650, "note": ""},
+    {"region": "Sub-Saharan Africa", "cap_usd": 800, "note": ""},
+    {"region": "Oceania", "cap_usd": 850, "note": ""}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "must_see": [
+    {"destination": "Japan", "region": "Japan", "why": "Top-priority trip", "cap_usd_override": null},
+    {"destination": "South Korea", "region": "Korea", "why": "Top-priority trip", "cap_usd_override": null},
+    {"destination": "Vietnam", "region": "Vietnam and SE Asia", "why": "Top-priority trip", "cap_usd_override": null},
+    {"destination": "New York City", "region": "NYC", "why": "Top-priority trip", "cap_usd_override": null},
+    {"destination": "Europe: London", "region": "Western Europe", "why": "Sample Europe city", "cap_usd_override": null},
+    {"destination": "Europe: Paris", "region": "Western Europe", "why": "Sample Europe city", "cap_usd_override": null},
+    {"destination": "Europe: Rome", "region": "Western Europe", "why": "Sample Europe city", "cap_usd_override": null},
+    {"destination": "Europe: Barcelona", "region": "Western Europe", "why": "Sample Europe city", "cap_usd_override": null},
+    {"destination": "Europe: Lisbon", "region": "Western Europe", "why": "Sample Europe city", "cap_usd_override": null}
+  ]
+}
